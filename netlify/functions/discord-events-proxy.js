@@ -1,5 +1,5 @@
 /**
- * Discord サーバーイベント → homekura-site スケジュール
+ * Discord サーバーイベント → homesite スケジュール
  * Netlify 環境変数: DISCORD_BOT_TOKEN, DISCORD_GUILD_ID（任意）
  */
 
