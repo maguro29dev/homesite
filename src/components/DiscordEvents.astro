@@ -1,0 +1,92 @@
+---
+import Card from "@/components/Card.astro";
+import { discordEventsConfig, discordEventsFallback } from "@/data/content";
+
+const fallbackJson = JSON.stringify(discordEventsFallback);
+---
+
+<Card>
+  <h2 class="text-lg font-bold text-brand-dark mb-4">📅 スケジュール</h2>
+  <div id="homekura-events-root" class="space-y-3">
+    <p class="text-sm text-brand/70">読み込み中…</p>
+  </div>
+</Card>
+
+<script define:vars={{ apiPath: discordEventsConfig.apiPath, fallbackJson }}>
+  const root = document.getElementById("homekura-events-root");
+  if (!root) throw new Error("homekura-events-root not found");
+
+  const fallback = JSON.parse(fallbackJson);
+
+  function formatJst(iso) {
+    if (!iso) return "";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    const parts = new Intl.DateTimeFormat("ja-JP", {
+      timeZone: "Asia/Tokyo",
+      month: "numeric",
+      day: "numeric",
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).formatToParts(d);
+    const get = (type) => parts.find((p) => p.type === type)?.value || "";
+    return `${get("month")}/${get("day")}（${get("weekday")}）${get("hour")}:${get("minute")}`;
+  }
+
+  function renderEvents(events, source) {
+    if (!events.length) {
+      root.innerHTML = '<p class="text-sm text-brand/70">現在予定されているイベントはありません。</p>';
+      return;
+    }
+
+    root.innerHTML = events
+      .map(
+        (ev) => `
+        <div class="rounded-lg p-4 border-2 border-brand-accent/60 bg-brand-50">
+          <div class="flex flex-col gap-1">
+            <time class="text-sm font-black text-brand">${formatJst(ev.scheduledStartTime)}</time>
+            <h3 class="font-bold text-brand-dark">${ev.name}</h3>
+          </div>
+          ${ev.description ? `<p class="mt-2 text-sm text-brand/80 leading-relaxed">${ev.description}</p>` : ""}
+        </div>`
+      )
+      .join("");
+
+    if (source === "fallback") {
+      const note = document.createElement("p");
+      note.className = "text-xs text-brand/70 mt-2";
+      note.textContent =
+        "※ Discord API 未連携のためキャッシュ表示です。Netlify に DISCORD_BOT_TOKEN 設定後に自動同期されます。";
+      root.appendChild(note);
+    }
+  }
+
+  function filterFuture(events) {
+    const now = Date.now();
+    return events.filter((ev) => {
+      const end = ev.scheduledEndTime ? Date.parse(ev.scheduledEndTime) : null;
+      if (end && end < now) return false;
+      return true;
+    });
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(apiPath);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.events) && data.events.length > 0) {
+          renderEvents(filterFuture(data.events), "live");
+          return;
+        }
+      }
+    } catch {
+      /* fallback */
+    }
+    renderEvents(filterFuture(fallback), "fallback");
+  }
+
+  load();
+</script>

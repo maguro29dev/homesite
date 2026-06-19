@@ -1,0 +1,58 @@
+---
+import Base from "@/layouts/Base.astro";
+import Card from "@/components/Card.astro";
+import DiscordEvents from "@/components/DiscordEvents.astro";
+import TimedPromotions from "@/components/TimedPromotions.astro";
+import { md } from "@/lib/md";
+import { aboutPage, conceptSections, participantSite, streamerParticipation } from "@/data/content";
+---
+
+<Base title={aboutPage.title} description={aboutPage.description}>
+  <div class="max-w-2xl mx-auto px-4 py-8 space-y-6">
+    <section>
+      <h1 class="text-2xl font-black text-brand-dark mb-2">{aboutPage.title}</h1>
+      <p class="text-brand leading-relaxed" set:html={md(aboutPage.lead)} />
+      <p class="mt-3 text-sm text-brand/80 leading-relaxed">{aboutPage.audienceNote}</p>
+    </section>
+
+    <TimedPromotions />
+
+    <Card>
+      <h2 class="text-lg font-bold text-brand-dark mb-4">コンセプト</h2>
+      <div class="space-y-4">
+        {conceptSections.map((sec) => (
+          <div>
+            <h3 class="font-bold text-brand text-sm mb-1">{sec.heading}</h3>
+            <p class="text-sm text-brand/85 leading-relaxed">{sec.body}</p>
+          </div>
+        ))}
+      </div>
+    </Card>
+
+    <DiscordEvents />
+
+    <Card>
+      <h2 class="text-lg font-bold text-brand-dark mb-2">{participantSite.title}</h2>
+      <p class="text-sm text-brand/85 leading-relaxed mb-2">{participantSite.body}</p>
+      <p class="text-sm font-bold text-brand-dark mb-3">{participantSite.thanks}</p>
+      <a
+        href={participantSite.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex px-4 py-2 rounded-full bg-brand-dark text-white text-sm font-bold hover:opacity-90"
+      >
+        {participantSite.linkLabel}
+      </a>
+      <p class="mt-3 text-xs text-brand/65">{participantSite.note}</p>
+    </Card>
+
+    <Card>
+      <h2 class="text-lg font-bold text-brand-dark mb-2">{streamerParticipation.title}</h2>
+      <p class="text-sm text-brand/85 leading-relaxed" set:html={md(streamerParticipation.body)} />
+    </Card>
+
+    <p class="text-center text-sm">
+      <a href="/guide/" class="font-bold text-brand-dark hover:underline">視聴者ガイドラインを読む →</a>
+    </p>
+  </div>
+</Base>

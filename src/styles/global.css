@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  /* https://sirokuru.net/homecra/ と同色 */
+  --color-brand: #793c09;
+  --color-brand-dark: #663710;
+  --color-brand-50: #fdf9e0;
+  --color-brand-surface: #fcc95b;
+  --color-brand-accent: #e8b346;
+  --font-sans: "M PLUS Rounded 1c", system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #fcc95b;
+  color: #793c09;
+}

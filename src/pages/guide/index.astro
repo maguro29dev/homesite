@@ -1,0 +1,104 @@
+---
+import Base from "@/layouts/Base.astro";
+import Card from "@/components/Card.astro";
+import { md } from "@/lib/md";
+import { guidePage, viewerGuidelines, xHashtagLinks } from "@/data/content";
+
+const generalTag = xHashtagLinks.find((item) => !("warn" in item && item.warn));
+const spoilerTag = xHashtagLinks.find((item) => "warn" in item && item.warn);
+---
+
+<Base title={guidePage.title} description={guidePage.description}>
+  <div class="max-w-2xl mx-auto px-4 py-8 space-y-6">
+    <section>
+      <h1 class="text-2xl font-black text-brand-dark mb-2">{guidePage.title}</h1>
+      <p class="text-brand leading-relaxed" set:html={md(guidePage.intro)} />
+    </section>
+
+    <Card class="ring-2 ring-brand-accent/30">
+      <div class="rounded-lg bg-brand-50 border-2 border-brand-accent/50 p-4 mb-6 space-y-3">
+        <h2 class="font-black text-brand-dark">{viewerGuidelines.coreRule.title}</h2>
+        <p class="text-brand font-medium leading-relaxed" set:html={md(viewerGuidelines.coreRule.body)} />
+        <p class="text-sm text-brand/80 leading-relaxed" set:html={md(viewerGuidelines.coreRule.hatoNote)} />
+        <ul class="space-y-2">
+          {viewerGuidelines.coreRule.examples.map((ex) => (
+            <li class="text-sm text-brand/85 pl-3 border-l-2 border-brand-accent leading-relaxed">
+              <span set:html={md(ex)} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-xl border-2 border-brand-accent p-5 mb-6">
+        <h2 class="text-lg font-bold text-brand-dark mb-2">{viewerGuidelines.spoilerHashtag.title}</h2>
+        <p class="text-sm text-brand/85 mb-4 leading-relaxed">{viewerGuidelines.spoilerHashtag.body}</p>
+        <ol class="space-y-3 mb-4">
+          {viewerGuidelines.spoilerHashtag.usage.map((u, i) => (
+            <li class="flex gap-3 text-sm text-brand/85 leading-relaxed">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-brand-dark text-white text-xs font-black shrink-0">
+                {i + 1}
+              </span>
+              <span set:html={md(u)} />
+            </li>
+          ))}
+        </ol>
+        <div class="flex flex-wrap gap-2">
+          {generalTag && (
+            <a
+              href={generalTag.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex px-4 py-2 rounded-full border-2 border-brand-accent text-brand text-sm font-bold hover:bg-brand-50"
+            >
+              {generalTag.label} ↗
+            </a>
+          )}
+          {spoilerTag && (
+            <a
+              href={spoilerTag.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex px-4 py-2 rounded-full bg-brand-dark text-white text-sm font-bold hover:opacity-90"
+            >
+              {spoilerTag.label} ↗
+            </a>
+          )}
+        </div>
+        {spoilerTag && (
+          <p class="mt-3 text-xs font-bold text-rose-700">
+            ※{spoilerTag.label} にはネタバレを含む投稿があります。閲覧注意
+          </p>
+        )}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <p class="text-xs font-bold text-brand mb-2">してほしいこと</p>
+          <ul class="space-y-2">
+            {viewerGuidelines.dos.map((item) => (
+              <li class="flex gap-2 text-sm text-brand/85">
+                <span class="text-brand-dark">✓</span>
+                <span set:html={md(item)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-rose-700 mb-2">ご遠慮いただきたいこと</p>
+          <ul class="space-y-2">
+            {viewerGuidelines.donts.map((item) => (
+              <li class="flex gap-2 text-sm text-brand/85">
+                <span class="text-rose-600">×</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Card>
+
+    <p class="text-center text-sm text-brand/70">
+      <a href="/" class="text-brand-dark font-bold hover:underline">← home</a>
+    </p>
+  </div>
+</Base>

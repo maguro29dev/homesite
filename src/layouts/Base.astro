@@ -1,0 +1,95 @@
+---
+import "@/styles/global.css";
+import { siteMeta, branding } from "@/data/content";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "homeクラ 視聴者向け案内" } = Astro.props;
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/", label: "home" },
+  { href: "/guide/", label: "視聴者ガイドライン" },
+];
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={branding.themeColor} />
+    <title>{title} | {siteMeta.name}</title>
+    <link rel="icon" href={branding.iconPath} type="image/png" />
+    <link rel="apple-touch-icon" href={branding.iconPath} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="bg-brand-dark">
+      <div class="max-w-2xl mx-auto px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <a href="/" class="flex items-center justify-center sm:justify-start shrink-0 h-10 sm:h-12">
+          <img
+            src={branding.headerLogoPath}
+            alt={branding.logoAlt}
+            class="h-full w-auto max-w-[min(100%,240px)] sm:max-w-[260px] object-contain header-logo-img"
+            width="260"
+            height="48"
+          />
+          <span class="header-logo-fallback hidden font-black text-lg text-white">{siteMeta.name}</span>
+        </a>
+        <nav class="grid grid-cols-2 gap-2 w-full sm:w-auto sm:flex sm:gap-2">
+          {nav.map((link) => {
+            const active =
+              path === link.href || (link.href !== "/" && path.startsWith(link.href));
+            return (
+              <a
+                href={link.href}
+                class:list={[
+                  "inline-flex items-center justify-center min-h-11 px-3 py-2.5 rounded-full text-sm font-bold transition-colors border-2 text-center w-full sm:w-auto sm:min-w-[7rem]",
+                  active
+                    ? "bg-brand-surface text-brand border-brand-accent"
+                    : "bg-white/10 text-white border-white/25 active:bg-white/20",
+                ]}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+        </nav>
+      </div>
+    </header>
+    <main class="flex-1">
+      <slot />
+    </main>
+    <footer class="bg-brand-dark py-6 text-center text-xs text-white/90">
+      <img
+        src={branding.iconPath}
+        alt=""
+        class="mx-auto h-12 w-12 rounded-lg object-cover mb-2 ring-2 ring-brand-accent/40"
+        width="48"
+        height="48"
+      />
+      <p>{siteMeta.name}</p>
+      <p class="mt-1 text-white/70">最終更新: {siteMeta.updatedAt}</p>
+    </footer>
+    <script>
+      document.querySelectorAll(".header-logo-img").forEach((img) => {
+        img.addEventListener("error", () => {
+          img.classList.add("hidden");
+          img.parentElement?.querySelector(".header-logo-fallback")?.classList.remove("hidden");
+        });
+        if (!(img as HTMLImageElement).complete || (img as HTMLImageElement).naturalWidth === 0) {
+          if ((img as HTMLImageElement).complete) img.dispatchEvent(new Event("error"));
+        }
+      });
+    </script>
+  </body>
+</html>

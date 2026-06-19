@@ -1,0 +1,52 @@
+---
+import { timedPromotions } from "@/data/content";
+
+const promotionsJson = JSON.stringify(timedPromotions);
+---
+
+<div id="homekura-promotions-root"></div>
+
+<script define:vars={{ promotionsJson }}>
+  const root = document.getElementById("homekura-promotions-root");
+  if (!root) throw new Error("homekura-promotions-root not found");
+
+  const promotions = JSON.parse(promotionsJson);
+  const now = Date.now();
+
+  function md(text) {
+    return text.replace(/\*\*(.+?)\*\*/g, "<strong class='text-brand-dark font-bold'>$1</strong>");
+  }
+
+  const active = promotions.filter((p) => Date.parse(p.visibleUntil) > now);
+  if (!active.length) {
+    root.remove();
+    return;
+  }
+
+  root.innerHTML = active
+    .map(
+      (promo) => `
+      <div class="bg-white rounded-xl border-2 border-brand-accent p-5 ring-1 ring-brand-accent/20">
+        <h2 class="text-lg font-bold text-brand-dark mb-4">${promo.icon} ${promo.title}</h2>
+        <ol class="space-y-3 mb-4">
+          ${promo.lines
+            .map(
+              (line, i) => `
+            <li class="flex gap-3 text-sm text-brand/85 leading-relaxed">
+              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-brand-dark text-white text-xs font-black shrink-0">${i + 1}</span>
+              <span>${md(line)}</span>
+            </li>`
+            )
+            .join("")}
+        </ol>
+        <div class="flex flex-wrap gap-2">
+          <a href="${promo.xPostUrl}" target="_blank" rel="noopener noreferrer"
+            class="inline-flex px-4 py-2 rounded-full bg-brand-dark text-white text-sm font-bold hover:opacity-90">X の募集 ↗</a>
+          <a href="https://x.com/hashtag/${encodeURIComponent(promo.hashtag.replace("#", ""))}" target="_blank" rel="noopener noreferrer"
+            class="inline-flex px-4 py-2 rounded-full border-2 border-brand-accent text-brand text-sm font-bold">${promo.hashtag} ↗</a>
+        </div>
+        ${promo.note ? `<p class="mt-3 text-xs text-brand/65">${promo.note}</p>` : ""}
+      </div>`
+    )
+    .join("");
+</script>
