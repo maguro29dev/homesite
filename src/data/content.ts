@@ -125,22 +125,8 @@ export const discordEventsConfig = {
   apiPath: "/.netlify/functions/discord-events-proxy",
 } as const;
 
-export const timedPromotions = [
-  {
-    id: "buzzword-award-s1",
-    visibleUntil: "2026-07-02T00:00:00+09:00",
-    title: "流行語大賞（視聴者も参加 OK）",
-    icon: "🏆",
-    lines: [
-      "X で **#homeクラ流行語** を付けて、シーズン1 の名言・迷言・場の空気を投稿",
-      "6/28 頃まで運営がノミネートを絞り込み",
-      "6/30 21:00 の授賞式で投票・大賞発表",
-    ],
-    xPostUrl: "https://x.com/maguro29/status/2066687203015897375",
-    hashtag: "#homeクラ流行語",
-    note: "募集は X 限定です。",
-  },
-] as const;
+/** 期間限定企画（S2 一般公開前は空。イベント確定後に追記） */
+export const timedPromotions = [] as const;
 
 export const streamerParticipation = {
   title: "配信者として参加したい方へ",
