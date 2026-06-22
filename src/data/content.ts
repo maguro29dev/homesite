@@ -87,17 +87,18 @@ export const viewerGuidelines = {
   ],
 } as const;
 
-/** 7/1〜 配信概要欄・Discord ch 用（必須 Mod クレジット + GL URL） */
-export const streamDescriptionBlurb = {
-  intro: "視聴者の方へ：https://homecra.netlify.app/guide/",
-  requiredModsTitle: "【使用 Mod（必須・クレジット）】",
-  requiredMods: [
-    "Simple Voice Chat — henkelmax",
-    "Litematica / MaLiLib — masa",
-  ],
-  otherModsLine:
-    "【その他】Fabric API, Cloth Config, Syncmatica, Servux ほか最適化 Mod を使用",
-} as const;
+/** `#📋ルール` §5 と同一 — 配信概要欄コピペ用（正本: mc_server_cicd `rules-s2.md`） */
+export const streamDescriptionBlock = `▼homeクラとは
+https://homecra.netlify.app/
+
+▼視聴者ガイドライン
+https://homecra.netlify.app/guide/
+
+▼homeクラ使用MOD
+Simple Voice Chat — https://modrinth.com/plugin/simple-voice-chat
+Litematica — https://modrinth.com/mod/litematica
+MaLiLib — https://modrinth.com/mod/malilib
+その他 MOD 多数` as const;
 
 export const discordEventsFallback = [
   {
