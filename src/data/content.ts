@@ -4,7 +4,7 @@
  */
 export const siteMeta = {
   name: "homeクラ",
-  updatedAt: "2026-06-19",
+  updatedAt: "2026-06-22",
 } as const;
 
 /** ヘッダー: homecra_logo（sirokuru.net） / アイコン: Discord サーバーアイコン */
@@ -50,50 +50,53 @@ export const conceptSections = [
 
 export const guidePage = {
   title: "視聴者ガイドライン",
-  description:
-    "homeクラ を視聴する際のマナー。鳩行為・ネタバレ・#homeクラネタバレ の使い方。",
+  description: "homeクラ を視聴する際のマナー。鳩行為・ネタバレについて。",
   intro:
-    "複数の配信者が同じワールドで遊ぶ homeクラ では、**鳩行為**や**ネタバレ**が特にトラブルになりやすいです。以下を目安にしてください。",
+    "複数の配信者が同じワールドで遊ぶ homeクラ では、**鳩行為**や**ネタバレ**が特にトラブルになりやすいです。**ネタバレは基本 NG** です。以下を目安にしてください。",
 } as const;
 
 export const viewerGuidelines = {
   coreRule: {
     title: "鳩・ネタバレの基本",
     body:
-      "**原則 NG** です。例外は **配信者本人がリスナーに「教えて」「聞いて」と尋ねたときだけ** です。",
+      "**鳩行為・ネタバレは原則 NG** です。例外は **配信者本人がリスナーに「教えて」「聞いて」と尋ねたときだけ** です。",
     hatoNote:
       "**鳩（はと）** とは、A さんの配信で得た情報を、B さんの配信のコメント欄など **別の配信者の場** に持ち込む行為です（伝書鳩のイメージ）。配信者が口から言っていない別枠の情報を、視聴者が先回りして教えるのも鳩・ネタバレにあたります。",
+    snsNote:
+      "**X や SNS への homeクラ のネタバレ投稿もお控えください。** ハッシュタグで区切る運用は行いません。",
     examples: [
       "NG: 「さっき ○○ さんが △△ 言ってたよ」（配信者が聞いていない別枠の話）",
       "NG: 他の配信で見た進行・座標・出来事を、この配信のコメントで先取りして教える",
+      "NG: X や SNS に homeクラ のネタバレを書く",
       "OK: 配信者が「他の人の配信で何かあった？」と視聴者に質問したときに答える",
       "OK: その配信内で既に話題になっている内容の整理・補足",
     ],
   },
-  spoilerHashtag: {
-    title: "ネタバレを X に書くとき",
-    hashtag: "#homeクラネタバレ",
-    body:
-      "どうしても X など配信外に homeクラ のネタバレを書く必要があるときは、必ずハッシュタグを付けてください。見たくない人が避けやすくなります。",
-    usage: [
-      "投稿文の先頭か末尾に **#homeクラネタバレ** を付ける",
-      "本文に「ネタバレ注意」なども添えるとより親切",
-      "配信者のコメント欄やライブチャットでは、ハッシュタグの代わりに書かない・鳩にしない方が基本",
-    ],
-  },
   dos: [
     "配信者・参加者・他の視聴者へのリスペクトを大切に",
-    "配信や動画のネタバレは、タイトル・サムネ・コメントで配慮する",
     "批判や攻撃ではなく、応援やユーモアで盛り上げる",
     "配信者が鳩・ネタバレ OK と明示した場面（企画・コラボ等）以外は、原則として情報を運ばない",
   ],
   donts: [
     "配信者が尋ねていない鳩・ネタバレ（別枠の情報の持ち込み）",
+    "X・SNS 等への homeクラ のネタバレ投稿",
     "参加者の個人攻撃・過度なネガティブ連投",
     "配信・コメント欄での荒らし・スパム",
     "未公開の座標・内部情報の拡散（配信者が公開していない内容）",
     "「なぜ自分は入れないの」等、参加者以外への不当なプレッシャー",
   ],
+} as const;
+
+/** 7/1〜 配信概要欄・Discord ch 用（必須 Mod クレジット + GL URL） */
+export const streamDescriptionBlurb = {
+  intro: "視聴者の方へ：https://homecra.netlify.app/guide/",
+  requiredModsTitle: "【使用 Mod（必須・クレジット）】",
+  requiredMods: [
+    "Simple Voice Chat — henkelmax",
+    "Litematica / MaLiLib — masa",
+  ],
+  otherModsLine:
+    "【その他】Fabric API, Cloth Config, Syncmatica, Servux ほか最適化 Mod を使用",
 } as const;
 
 export const discordEventsFallback = [
@@ -144,20 +147,3 @@ export const participantSite = {
   url: "https://sirokuru.net/homecra/",
   linkLabel: "しろくるさんの homeクラ ページ ↗",
 } as const;
-
-/** ネタバレセクション内: X ハッシュタグリンク */
-export const xHashtagLinks = [
-  {
-    tag: "#homeクラ",
-    label: "#homeクラ",
-    note: "homeクラ 全般",
-    url: "https://x.com/hashtag/homeクラ",
-  },
-  {
-    tag: "#homeクラネタバレ",
-    label: "#homeクラネタバレ",
-    note: "ネタバレ投稿用 — 閲覧注意",
-    url: "https://x.com/hashtag/homeクラネタバレ",
-    warn: true,
-  },
-] as const;
